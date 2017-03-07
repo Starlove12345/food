@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <!-- 可以在一定程度上解决乱码问题  -->
+     <constant name="struts.i18n.encoding" value="gbk"/>
+      <!-- 开发模式，提供更多的日志或debug信息 -->
+     <constant name="struts.devMode" value="true" />
+     <constant name="struts.ui.theme" value="simple" />
+     <!--Struts2中Action对象的创建交给spring完成-->
+     <constant name="struts.objectFactory" value="spring" />  
+       
+    <package name="food" namespace="/food" extends="struts-default" >
+    
+	        <action name="food_*" class="foodAction" method="{1}">
+	            <result name="message">/message.jsp</result>
+	        	<result name="show_view">/main.jsp</result>
+	        	<result name="detail_view">/detail.jsp</result>
+	        	<result name="edit_view">/edit.jsp</result>
+	        	<result name="delete_message">/delete_message.jsp</result>
+	        	<result name="edit_message">/edit_message.jsp</result>
+	        </action>  
+	 </package> 
+	<!-- 註冊完之後還是要回到main.jsp中，之所以要跳轉到這個action，是為了顯示food的所有數據 -->
+	  <package name="customer" namespace="/customer" extends="struts-default" >
+	        <action name="customer_*" class="customerAction" method="{1}">
+	            <result name="show_view" type="chain">
+	              <param name="actionName">food_showFood</param><!-- 兩個參數之間 -->
+                  <param name="namespace">/food</param><!-- 命名空间，保证文件跳转的时候可以使用同一个文件 -->
+                  <param name="param1">${customer.name}</param><!-- 要傳的參數 -->
+                </result>
+                <result name="input">/login.jsp</result>
+	        </action>  
+	 </package> 
+	 
+	  <package name="order" namespace="/order" extends="struts-default" >
+	        <action name="order_*" class="orderAction" method="{1}">
+	            <result name="order_message">/order_message.jsp</result>
+	            <result name="show_view">/order_main.jsp</result>
+	            <result name="detail_view">/order_detail.jsp</result>
+	        </action>  
+	 </package> 
+       
+	 
+</struts>
